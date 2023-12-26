@@ -1,5 +1,19 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
+const Button = (props) => (
+  <button onClick={props.handleAcction}> {props.text}</button>
+)
+
+const MostVotes = (props) => {
+  return(
+  <>
+    <h1>Anecdote with most votes</h1>
+    <br />
+    <h2>{props.anecdote}</h2>
+    <h3>has {props.maxVote} votes</h3>
+  </>
+  )
+  }
 
 function App() {
   const anecdotes = [
@@ -12,38 +26,47 @@ function App() {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
     'The only way to go fast, is to go well.'
   ]
-
+  const votes = Array(anecdotes.length).fill(0);
   const [selected, setSelected] = useState(0)
-  const [votes, setVotes] = useState(new Array(8).fill(0))
-  
-
+  const [anecdotesVotes, setVotes] = useState(votes)
 
   const getRandomInt = () => {
     const newIndex = Math.floor(Math.random()*anecdotes.length);
     return setSelected(newIndex)
   }
 
-  const handleVote = (index) => {
-    console.log('handle');
-    //const copy = [...votes]
-     console.log(votes[index]+=1); 
-     console.log(votes);
-    //setVotes(votes)
+  const handleVote = () => {
+    const copyAnecdotes = [...anecdotesVotes]
+    copyAnecdotes[selected]+=1;
+    setVotes(copyAnecdotes)
   }
-  //ver condicional dentro del return
   
+  function mostVotes() {
+    let indexAnecdote = 0;
+    let maxVotes = anecdotesVotes[0];
+    for (let index = 0; index < anecdotesVotes.length; index++) {
+      if(anecdotesVotes[index]> maxVotes){
+        maxVotes = anecdotesVotes[index];
+        indexAnecdote = index;
+      }
+    }
+    return {maxVotes, indexAnecdote};
+  }
+
   return (
     <>
+    <h1>Anecdote of day</h1>
        {anecdotes[selected]}
        <br />
-       {votes[selected] > 1 ? (
-        <h1>has {votes[selected]} votes</h1>
+       {anecdotesVotes[selected] > 1 ? (
+        <h2>has {anecdotesVotes[selected]} votes</h2>
         ):(
-        <h1>has {votes[selected]} vote</h1> 
+        <h2>has {anecdotesVotes[selected]} vote</h2> 
         )}
-       <button onClick={handleVote(selected)}>Vote</button>
-       <br />
-       <button onClick={getRandomInt}>Next anecdote</button>
+        <Button handleAcction={handleVote} text={'Vote'}/>
+        <br />
+        <Button handleAcction={getRandomInt} text={'Next anecdote'}/>
+       <MostVotes anecdote={anecdotes[mostVotes().indexAnecdote]} maxVote={mostVotes().maxVotes}/>
     </>
   )
 }
