@@ -6,7 +6,8 @@ const DataCountry = ({country}) =>{
   const [weather, setWeather] = useState('')
   useEffect(()=>{
     axios
-    .get('https://weatherstack.com/' + country[0].capital)
+    .get('http://api.weatherstack.com/current?access_key=13ea5bbdecd480c07a973ab7acee24ee&query = New York')
+    //.get(baseUrl + '? access_key = ' + access_key + '& query = ' + country[0].capital)
     .then(response => {
       setWeather(response.data)
     })
@@ -23,9 +24,17 @@ const DataCountry = ({country}) =>{
   )
 }
 
-const CountriesFilter = ({countries, filter}) => {
 
+
+const CountriesFilter = ({countries, filter}) => {
+  const [componentShow, setComponentshow] = useState(null);
   const filteredCountries = countries.filter(dataCountry => dataCountry.name.common.toLowerCase().includes(filter.toLowerCase()))
+
+  const handleShow=(component) => {
+  setComponentshow(component)
+  console.log(componentShow);
+  }
+
   if(filteredCountries.length > 10) {
     return (
       <div>Too many matches, specify another filter</div>
@@ -46,11 +55,10 @@ const CountriesFilter = ({countries, filter}) => {
         {filteredCountries.map(country => (
           <li key={country.ccn3}>
             {country.name.common}
-            <button>Show  </button>
+            <button onClick={()=>handleShow(<DataCountry country={country}/>)}>Show</button>
           </li>
         ))} 
       </ul>
-
     </div>
   )
   }
@@ -59,7 +67,6 @@ const CountriesFilter = ({countries, filter}) => {
 function App() {
   const [countries, setCountries] = useState([])
   const [filter, setFilter] = useState('')
-  
   
   useEffect(()=>{
     axios
