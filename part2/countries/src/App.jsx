@@ -6,7 +6,7 @@ const DataCountry = ({country}) =>{
   const [weather, setWeather] = useState('')
   useEffect(()=>{
     axios
-    .get('http://api.weatherstack.com/current?access_key=13ea5bbdecd480c07a973ab7acee24ee&query = New York')
+    .get('http://api.weatherstack.com/current')
     //.get(baseUrl + '? access_key = ' + access_key + '& query = ' + country[0].capital)
     .then(response => {
       setWeather(response.data)
