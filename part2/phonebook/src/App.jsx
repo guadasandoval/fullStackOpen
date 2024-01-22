@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
-import PersonService from './components/PersonService'
+import PersonService from './services/PersonService'
 
 
 const App = ()=>{
@@ -59,7 +59,7 @@ const App = ()=>{
    PersonService
    .getAll()
    .then(response => setPersons(response))
-  }, [persons])
+  }, [])
 
  return(
     <>
