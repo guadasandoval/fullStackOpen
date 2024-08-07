@@ -8,4 +8,7 @@ El curso cubre las pruebas, la configuración y gestión del entorno, y el uso d
 
 | ##  | Nombre del reto                                                           |  Solución                                                                        | 
 | :-: | ------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-|00   | [Part 0](https://fullstackopen.com/es/part0)  | [Ver]()  |
+|00   | [Part 0](https://fullstackopen.com/es/part0)  | [Ver](https://github.com/guadasandoval/fullStackOpen/tree/main/part0)  |
+|00   | [Part 1](https://fullstackopen.com/es/part1)  | [Ver](https://github.com/guadasandoval/fullStackOpen/tree/main/part1)  |
+|00   | [Part 2](https://fullstackopen.com/es/part2)  | [Ver](https://github.com/guadasandoval/fullStackOpen/tree/main/part2)  |
+|00   | [Part 3](https://fullstackopen.com/es/part3)  | [Ver](https://github.com/guadasandoval/fullStackOpen/tree/main/part3)  |

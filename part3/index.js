@@ -1,9 +1,9 @@
-
+require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 var morgan = require('morgan')
 const cors = require('cors')
-
+const Person = require('./models/person')
 const app = express()
 
 let persons = [
@@ -34,15 +34,7 @@ let persons = [
     }
   ]
 
-  if (process.argv.length < 3) {
-    console.log('Please provide the password as an argument: node mongo.js <password>')
-    process.exit(1)
-  }
 
-  const password = process.argv[2]
-
-
-mongoose.connect(url)
 
   //middlewares
   app.use(express.json())
@@ -52,20 +44,8 @@ mongoose.connect(url)
   app.use(express.static('dist'))
 
 
-  const personSchema = new mongoose.Schema({
-    name: String,
-    number: Number,
-  })
 
-  const Person = mongoose.model('Person', personSchema)
 
-  personSchema.set('toJSON', {
-    transform: (document, returnedObject) => {
-      returnedObject.id = returnedObject._id.toString()
-      delete returnedObject._id
-      delete returnedObject.__v
-    }
-  })
 
   //endpoints
   app.get('/', (request, response) => {
@@ -95,12 +75,14 @@ mongoose.connect(url)
     }
   })
 
-  app.delete('/api/persons/:id', (request, response)=> {
+  app.delete('/api/persons/:id', (request, response, next)=> {
     const idPerson = Number(request.params.id)
     const newPersonsList = persons.filter((person)=> person.id !== idPerson)
-
-    response.status(204).end()
-
+    Person.findByIdAndDelete(request.params.id)
+    .then(result =>{
+       response.status(204).end()
+    })
+    .catch(error =>next(error))
   })
   
   //check if repeat numbers
@@ -137,6 +119,22 @@ mongoose.connect(url)
 
   })
 
+  app.put('api/persons/:id', (request, response, next) => {
+    const body = request.body
+    const personUpdate = {
+      name: body.name,
+      number: body.number
+    }
+
+    Person.findByIdAndUpdate(request.params.id, personUpdate, {new:true})
+    .then(personUpdateResponse =>{
+      response.json(personUpdateResponse)
+    })
+    .catch(error => next(error))
+  })
+
+
+  module.exports = mongoose.model('Person', personSchema)
   const PORT = process.env.PORT || 3001
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
